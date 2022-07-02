@@ -14,6 +14,7 @@
     <meta name="csrf_token" content="{{ csrf_token() }}>">
 </head>
 <body>
+    @include('partials.flash-message')
     @yield('content')
 </body>
 </html>
