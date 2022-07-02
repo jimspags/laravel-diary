@@ -5,8 +5,8 @@
   <div class="container-fluid">
     <a class="navbar-brand">Diary</a>
     <div class="d-flex">
-        <a href="" class="btn btn-primary">Login</a>
-        <a href="" class="btn btn-primary">Register</a>
+        <a href="{{ route('login.index') }}" class="btn btn-primary">Login</a>
+        <a href="{{ route('register.index') }}" class="btn btn-primary">Register</a>
     </div>
   </div>
 </nav>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="row justify-content-center align-items-center bg-primary bg-opacity-25" style="height: 100vh;">
     <div class="col-4 border border-primary bg-primary bg-opacity-50 p-5">
-        <a href="" class=""><img src="" alt="Diary Logo"></a>
+        <a href="{{ route('welcome') }}" class=""><img src="" alt="Diary Logo"></a>
         <h4>Register</h4>
         <form>
             <div class="mb-3">
@@ -24,7 +24,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form><br>
-        <a href="">Already have an account?</a>
+        <a href="{{ route('login.index') }}">Already have an account?</a>
     </div>
 </div>
 @endsection
