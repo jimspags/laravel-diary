@@ -5,14 +5,17 @@
     <div class="col-4 border border-primary bg-primary bg-opacity-50 p-2">
         <a href="{{ route('welcome') }}" class=""><img src="" alt="Diary Logo"></a>
         <h4>Login</h4>
-        <form>
+        <form action="{{ route('login.authenticate') }}" method="POST">
+            @csrf
             <div class="mb-1">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email">
+                <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}">
+                <small class="text-danger">@error('email'){{$message}}@enderror</small>
             </div>
             <div class="mb-1">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                <small class="text-danger">@error('password'){{$message}}@enderror</small>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form><br>

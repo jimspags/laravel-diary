@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController as Login;
 use App\Http\Controllers\RegisterController as Register;
+use App\Http\Controllers\DiaryController as Diary;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,14 @@ use App\Http\Controllers\RegisterController as Register;
 |
 */
 
-
+//Non-authenticated
 Route::middleware('guest')->group(function() {
     Route::view('/', 'welcome')->name('welcome');
 
     //Login
     Route::controller(Login::class)->group(function() {
         Route::get('/login', 'index')->name('login.index');
+        Route::post('/login/authenticate', 'authenticate')->name('login.authenticate');
     });
 
     //Register
@@ -30,5 +32,12 @@ Route::middleware('guest')->group(function() {
         Route::post('/register/store', 'store')->name('register.store');
     });
 
+});
+
+//Authenticated
+Route::middleware('user')->group(function() {
+    Route::controller(Diary::class)->group(function() {
+        Route::get('/home', 'index')->name('diary.index');
+    }); 
 });
 
