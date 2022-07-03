@@ -2,9 +2,8 @@
 @section('title', 'Register')
 @section('content')
 <div class="row justify-content-center align-items-center bg-primary bg-opacity-25" style="height: 100vh;">
-    <div class="col-4 border border-primary bg-primary bg-opacity-50 p-2">
-        <a href="{{ route('welcome') }}" class=""><img src="" alt="Diary Logo"></a>
-        <h4>Register</h4>
+    <div class="col-4 border rounded border-primary bg-light bg-opacity-50 p-3">
+        <a href="{{ route('welcome') }}" style="text-decoration: none;"><h3 class="text-center">DIARY</h3></a>
         <form action="{{ route('register.store') }}" method="POST">
             @csrf
             <div class="mb-1">

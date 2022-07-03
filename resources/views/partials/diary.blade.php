@@ -12,7 +12,7 @@
         </div>
         <div class="card-body">
             <p>{{ $diary->description }}</p>
-            <small>{{ $diary->created_at }}</small>
+            <small>{{ $diary->created_at->diffForHumans() }}</small>
         </div>
     </div>
 @endforeach

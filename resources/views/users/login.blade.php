@@ -1,14 +1,13 @@
 @extends('master')
 @section('title', 'Login')
 @section('content')
-<div class="row justify-content-center align-items-center bg-primary bg-opacity-25" style="height: 100vh;">
-    <div class="col-4 border border-primary bg-primary bg-opacity-50 p-2">
-        <a href="{{ route('welcome') }}" class=""><img src="" alt="Diary Logo"></a>
-        <h4>Login</h4>
+<div class="row justify-content-center align-items-center" style="height: 100vh;">
+    <div class="col-4 border rounded border-primary bg-light bg-opacity-50 p-5">
+        <a href="{{ route('welcome') }}" style="text-decoration: none;"><h3 class="text-center">DIARY</h3></a>
         <form action="{{ route('login.authenticate') }}" method="POST">
             @csrf
             <div class="mb-1">
-                <label for="email" class="form-label">Email address</label>
+                <label for="email" class="form-label">Email</label>
                 <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}">
                 <small class="text-danger">@error('email'){{$message}}@enderror</small>
             </div>

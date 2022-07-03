@@ -83,7 +83,7 @@ class DiaryController extends Controller
                 'message' => 'Diary Added',
                 'diary' => $request->all(),
                 'id' => $id,
-                'created_at' => $created_at
+                'created_at' => $created_at->diffForHumans()
             ]);
         }
     }

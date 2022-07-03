@@ -1,36 +1,31 @@
 @extends('master')
 @section('title', 'Welcome')
+
 @section('content')
-<nav class="navbar bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand">Diary</a>
-    <div class="d-flex">
-        <a href="{{ route('login.index') }}" class="btn btn-primary">Login</a>
-        <a href="{{ route('register.index') }}" class="btn btn-primary">Register</a>
+<div class="container-fluid" style="height: 100vh;">
+  <nav class="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand"><h4 class="text-primary" style="font-weight: bold;">Diary</h4></a>
+      <div class="d-flex">
+          <a href="{{ route('login.index') }}" class="btn btn-primary" style="border-radius: 20px; margin-right: 5px; font-weight: bold;">Login</a>
+          <a href="{{ route('register.index') }}" class="btn btn-primary" style="border-radius: 20px; font-weight: bold;">Register</a>
+      </div>
     </div>
+  </nav>
+  <div class="row justify-content-center">
+    <div class="col-8 p-5">
+      <h1 class="text-primary text-center">Bring your memories with Diary in Cyberspace</h1>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-3">
+        <a href="{{ route('login.index') }}" class="btn btn-primary" style="font-weight: bold; padding: 10px 20px;">Let's get started!</a>
+      </div>
+    </div>
+
   </div>
-</nav>
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="{{ asset('images/welcome/ONE.jpg') }}" class="d-block w-100" alt="ONE" style="height: 500px;">
-    </div>
-    <div class="carousel-item">
-      <img src="{{ asset('images/welcome/TWO.jpg') }}" class="d-block w-100" alt="TWO" style="height: 500px;">
-    </div>
-    <div class="carousel-item">
-      <img src="{{ asset('images/welcome/THREE.jpg') }}" class="d-block w-100" alt="THREE" style="height: 500px;">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
 </div>
 
+<script>
 
+</script>
 @endsection
