@@ -28,7 +28,8 @@
             <div id="diary-data">
                 @include('partials.diary')
             </div>
-            <div class="spinner-border text-primary ajax-load justify-self-center" role="status" style="display:none;">
+            <div class="spinner-border text-primary ajax-load " role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
     </div>
@@ -62,20 +63,22 @@
     }
 
     $(document).ready(function() {
-        $(".ajax-load").show();
 
         //Fetch Diaries
         function loadDiaries(page) {
             $.ajax({
                 url: "?page=" + page,
-                type: "GET"
+                type: "GET",
+                beforeSend: function() {
+                    $(".ajax-load").show();
+                }
             })
             .done(function(data) {
                 if(data.html == " ") {
-                    $(".ajax-load").hide();
                     $(".ajax-load").html('No diary found');
-                    return;
+                    return
                 }
+                $(".ajax-load").hide();
                 $("#diary-data").append(data.html);
             })
             .fail(function(jqXHR, ajaxOptions, thrownError){
@@ -84,12 +87,12 @@
         }
 
         let page = 1;
-        $(".ajax-load").click(function() {
-            page++;
-            loadDiaries(page);
-
-        })
-
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                page++;
+                loadDiaries(page);
+            }
+        });
 
         //Add Diary Form
         $("#add_diary_form").submit(function(e) {
