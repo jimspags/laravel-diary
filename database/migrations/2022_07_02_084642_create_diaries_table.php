@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('diaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users_id')->constrained()->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->mediumText('description');
             $table->timestamps();

@@ -39,6 +39,8 @@ Route::middleware('user')->group(function() {
     Route::controller(Diary::class)->group(function() {
         Route::get('/home', 'index')->name('diary.index');
         Route::post('/logout', 'logout')->name('diary.logout');
+        Route::post('/diary/store', 'store')->name('diary.store');
+        Route::delete('/diary/delete/{diary}', 'delete')->name('diary.delete');
     }); 
 });
 

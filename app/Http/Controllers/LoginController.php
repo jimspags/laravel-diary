@@ -15,7 +15,7 @@ class LoginController extends Controller
         $validateAuthenticate = $request->validated();
         if(auth()->attempt($validateAuthenticate)) {
             $request->session()->regenerate();
-            return redirect()->route('diary.index');
+            return redirect()->route('diary.index')->with('message', 'Login Successfully');
         }
         
         return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
