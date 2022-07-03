@@ -18,9 +18,42 @@ class DiaryController extends Controller
                 'html' => $view
             ]);
         }
-
         return view('diary.home', compact('diaries'));
     }
+
+
+    public function edit($id) {
+        $diary = Diary::where(['id' => $id, 'user_id' => auth()->user()->id])->get();
+        return response()->json([
+            'status' => 200,
+            'diary' => $diary
+        ]);
+    }
+    
+    public function update(Diary $diary, Request $request) {
+        $validateUpdate = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required'
+        ]);
+
+        if($validateUpdate->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validateUpdate->errors()
+            ]);
+        } else {
+            $diary->title = $request->title;
+            $diary->description = $request->description;
+            $diary->save();
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
+
+    }
+
+
+
 
     public function store(Request $request) {
         $validateDiaryAddRequest = Validator::make($request->all(), [
@@ -53,17 +86,20 @@ class DiaryController extends Controller
                 'created_at' => $created_at
             ]);
         }
-
     }
+
+
+
 
     public function delete($id) {
         Diary::find($id)->delete();
-        
         return response()->json([
             'status' => 200,
             'id' => $id
         ]);
     }
+
+
 
     public function logout(Request $request) {
         auth()->logout();

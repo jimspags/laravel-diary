@@ -41,6 +41,8 @@ Route::middleware('user')->group(function() {
         Route::post('/logout', 'logout')->name('diary.logout');
         Route::post('/diary/store', 'store')->name('diary.store');
         Route::delete('/diary/delete/{diary}', 'delete')->name('diary.delete');
+        Route::get('/diary/edit/{id}', 'edit')->name('diary.edit');
+        Route::put('/diary/update/{diary}', 'update')->name('diary.update');
     }); 
 });
 

@@ -33,13 +33,40 @@
             </div>
         </div>
     </div>
-
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Diary</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="diaryEditForm">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="titleEdit">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" name="description" id="descriptionEdit" cols="30" rows="5" style="resize:none;"></textarea>
+            </div>
+            <input type="hidden" name="diary_id" id="diary_id">
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script>
 
+    //Delete Diary
     function diaryDelete(id) {
         let url = "{{ route('diary.delete', ':id') }}";
         url = url.replace(':id', id);
@@ -69,6 +96,70 @@
     }
 
 
+    //Fetch Diary to Edit
+    function diaryEdit(id) {
+        let url = "{{ route('diary.edit', ':id') }}";
+        url = url.replace(':id', id);
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            success: function(response) {
+                $("#titleEdit").val("");
+                $("#descriptionEdit").val("");
+                if(response.status == 200) {
+                    $("#titleEdit").val(response.diary[0].title);
+                    $("#descriptionEdit").val(response.diary[0].description);
+                    $("#diary_id").val(response.diary[0].id);
+                }
+            }
+        });
+    }
+
+
+
+    //Update Diary
+    $("#diaryEditForm").submit(function(e) {
+        e.preventDefault();
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $("meta[name='csrf_token']").attr('content')
+            }
+        });
+
+        let data = {
+            title: $("#titleEdit").val(),
+            description: $("#descriptionEdit").val()        
+        }
+
+        let id = $("#diary_id").val()
+        let url = "{{ route('diary.update', ':id') }}";
+        url = url.replace(':id', id)
+
+        console.log(url)
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: data,
+            dataType: "json",
+            success: function(response) {
+                if(response.status == 200) {
+                    console.log('working')
+                    $(".btn-close").click();
+                    location.reload();
+                }
+
+                if(response.status == 400) {
+                    $("#titleEdit").attr('class',`form-control ${response.errors.title ? "is-invalid" : ""}`)
+                    $("#descriptionEdit").attr('class',`form-control ${response.errors.description ? "is-invalid" : ""}`)
+                }
+
+            }
+        });
+    })
+
+
 
 
     $(document).ready(function() {
@@ -92,7 +183,6 @@
 
         let page = 1;
         $(".ajax-load").show();
-
         $(".ajax-load").click(function () {
             page++;
             loadDiaries(page);
@@ -131,23 +221,25 @@
 
                     if(response.status == 200) {
                         $("#diary-data").prepend(`\
-                        <div class="card m-1" id="div_`+ response.id +`">\
+                        <div class="card m-1" id="div_${response.id}">\
                             <div class="card-header d-flex justify-content-between">\
-                                <h4>` + response.diary.title + `</h4>\
+                                <h4>${response.diary.title}</h4>\
                                 <div class="dropdown">\
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false"></button>\
                                     <ul class="dropdown-menu">\
-                                        <li><button class="dropdown-item" type="button"">Edit</button></li>\
-                                        <li><button class="dropdown-item" type="button" value="`+ response.id +`" id="deleteDiary" onclick="diaryDelete('${response.id}')">Delete</button></li>\
+                                        <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="diaryEdit('${response.id}')">Edit</button></li>\
+                                        <li><button class="dropdown-item" type="button" value="${response.id}" id="deleteDiary" onclick="diaryDelete('${response.id}')">Delete</button></li>\
                                     </ul>\
                                 </div>\
                             </div>\
                             <div class="card-body">\
-                                <p>` + response.diary.description + `</p>\
-                                <small>` + response.created_at + `</small>\
+                                <p>${response.diary.description}</p>\
+                                <small>${response.created_at}</small>\
                             </div>\
                         </div>\
                         `);
+                        $("#titleAdd").val('');
+                        $("#descriptionAdd").val('');
                     }
                 }
             });

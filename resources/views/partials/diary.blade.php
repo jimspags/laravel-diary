@@ -5,7 +5,7 @@
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" type="button" value="{{ $diary->id }}">Edit</button></li>
+                    <li><button class="dropdown-item" type="button" value="{{ $diary->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="diaryEdit('{{ $diary->id }}')">Edit</button></li>
                     <li><button class="dropdown-item" type="button" value="{{ $diary->id }}" onclick="diaryDelete('{{ $diary->id }}')">Delete</button></li>
                 </ul>
             </div>
