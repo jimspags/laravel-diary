@@ -58,6 +58,7 @@ class DiaryController extends Controller
 
     public function delete($id) {
         Diary::find($id)->delete();
+        
         return response()->json([
             'status' => 200,
             'id' => $id

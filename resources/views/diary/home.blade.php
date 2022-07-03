@@ -28,8 +28,8 @@
             <div id="diary-data">
                 @include('partials.diary')
             </div>
-            <div class="spinner-border text-primary ajax-load " role="status" style="display:none;">
-                <span class="sr-only">Loading...</span>
+            <div class="text-primary ajax-load " role="status" style="display:none;">
+                <h5 class="text-center">Load More</h5>
             </div>
         </div>
     </div>
@@ -56,29 +56,33 @@
             dataType: "json",
             success: function(response) {
                 if(response.status == 200) {
-                    $("#div_"+response.id).remove();
+
+                    $("#div_"+response.id).fadeOut();
+                    $("#div_"+response.id).fadeOut("slow");
+                    $("#div_"+response.id).fadeOut(1000);
+                    setInterval(2000, function() {
+                        $("#div_"+response.id).remove()
+                    })
                 }
             }
         });
     }
 
-    $(document).ready(function() {
 
+
+
+    $(document).ready(function() {
         //Fetch Diaries
         function loadDiaries(page) {
             $.ajax({
                 url: "?page=" + page,
-                type: "GET",
-                beforeSend: function() {
-                    $(".ajax-load").show();
-                }
+                type: "GET"
             })
             .done(function(data) {
-                if(data.html == " ") {
-                    $(".ajax-load").html('No diary found');
-                    return
+                if(data.html == "") {
+                    $(".ajax-load").html('<h5 class="text-center">No more diary found</h5>');
+                    return;
                 }
-                $(".ajax-load").hide();
                 $("#diary-data").append(data.html);
             })
             .fail(function(jqXHR, ajaxOptions, thrownError){
@@ -87,12 +91,17 @@
         }
 
         let page = 1;
-        $(window).scroll(function() {
-            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                page++;
-                loadDiaries(page);
-            }
-        });
+        $(".ajax-load").show();
+
+        $(".ajax-load").click(function () {
+            page++;
+            loadDiaries(page);
+        })
+
+
+
+
+
 
         //Add Diary Form
         $("#add_diary_form").submit(function(e) {
