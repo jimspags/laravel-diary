@@ -73,7 +73,6 @@ class DiaryController extends Controller
             $diary->description = $request->description;
             $diary->user_id = auth()->user()->id;
             $diary->save();
-
             $id = $diary->id;
             $created_at = $diary->created_at;
 

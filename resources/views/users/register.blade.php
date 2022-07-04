@@ -4,7 +4,7 @@
 <div class="row justify-content-center align-items-center bg-primary bg-opacity-25" style="height: 100vh;">
     <div class="col-4 border rounded border-primary bg-light bg-opacity-50 p-3">
         <a href="{{ route('welcome') }}" style="text-decoration: none;"><h3 class="text-center">DIARY</h3></a>
-        <form action="{{ route('register.store') }}" method="POST">
+        <form action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-1">
                 <label for="name" class="form-label">Name</label>
@@ -24,6 +24,10 @@
             <div class="mb-1">
                 <label for="password_confirmation" class="form-label">Confirm Password</label>
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+            </div>
+            <div class="mb-1">
+                <label for="image" class="form-label">Image (optional)</label>
+                <input type="file" class="form-control" name="image" id="">
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form><br>

@@ -3,13 +3,20 @@
 @section('title', 'Home')
 @section('content')
 <div class="container-fluid">
-    <nav class="navbar bg-light">
+    <nav class="navbar" style="background:rgba(255,255,255,0.5)">
     <div class="container-fluid">
-        <a class="navbar-brand">Diary, <span>{{ auth()->user()->name}}</span></a>
+        <!-- php artisan storage:link; before displaying image-->
+        <img class="border rounded-circle" src="{{ asset('storage/'.auth()->user()->image) }}" alt="" style="height: 40px; width: 40px;">
+        <!-- <p>{{ auth()->user()->image }}</p> -->
         <div class="d-flex">
             <form action="{{ route('diary.logout') }}" method="POST">
                 @csrf
-                <input type="submit" value="Logout" class="btn btn-danger">
+                <div class="dropdown" style="margin-right: 25px;">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 5px 25px;"></button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" type="submit" >Logout</button></li>
+                    </ul>
+                </div>
             </form>
         </div>
     </div>
@@ -19,7 +26,7 @@
             <form class="border border-primary p-2 bg-primary bg-opacity-50 rounded-3" id="add_diary_form">
                 <div class="mb-3 d-flex justify-content-between">
                     <input type="text" class="form-control w-50" placeholder="Diary Title" name="title" id="titleAdd">            
-                    <button type="submit" class="btn btn-success">Add Diary</button>
+                    <button type="submit" class="btn btn-primary">Add Diary</button>
                 </div>
                 <div class="mb-3">
                     <textarea class="form-control" cols="30" rows="2" style="resize:none;" placeholder="Description" name="description" id="descriptionAdd"></textarea>
@@ -28,9 +35,11 @@
             <div id="diary-data">
                 @include('partials.diary')
             </div>
-            <div class="text-primary ajax-load " role="status" style="display:none;">
-                <h5 class="text-center">Load More</h5>
+            <div class="spinner-border text-primary ajax-load" role="status" style="display:none;">
+                <span class="sr-only">Loading...</span>
             </div>
+            <button class="btn btn-primary" id="loadMore">Load more ...</button>
+            <h3 id="noMoreDiary" class="text-primary text-center" style="display: none;">No more diary</h3>
         </div>
     </div>
 </div>
@@ -83,7 +92,7 @@
             dataType: "json",
             success: function(response) {
                 if(response.status == 200) {
-
+                    
                     $("#div_"+response.id).fadeOut();
                     $("#div_"+response.id).fadeOut("slow");
                     $("#div_"+response.id).fadeOut(1000);
@@ -117,11 +126,9 @@
     }
 
 
-
     //Update Diary
     $("#diaryEditForm").submit(function(e) {
         e.preventDefault();
-
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $("meta[name='csrf_token']").attr('content')
@@ -137,7 +144,6 @@
         let url = "{{ route('diary.update', ':id') }}";
         url = url.replace(':id', id)
 
-        console.log(url)
         $.ajax({
             type: "PUT",
             url: url,
@@ -163,17 +169,24 @@
 
 
     $(document).ready(function() {
+
         //Fetch Diaries
         function loadDiaries(page) {
             $.ajax({
                 url: "?page=" + page,
-                type: "GET"
+                type: "GET",
+                beforeSend: function() {
+                    $(".ajax-load").show()
+                }
             })
             .done(function(data) {
                 if(data.html == "") {
-                    $(".ajax-load").html('<h5 class="text-center">No more diary found</h5>');
+                    $("#loadMore").hide();
+                    $(".ajax-load").hide();
+                    $("#noMoreDiary").show();
                     return;
                 }
+                $(".ajax-load").hide();
                 $("#diary-data").append(data.html);
             })
             .fail(function(jqXHR, ajaxOptions, thrownError){
@@ -182,17 +195,12 @@
         }
 
         let page = 1;
-        $(".ajax-load").show();
-        $(".ajax-load").click(function () {
+        $("#loadMore").click(function() {
             page++;
             loadDiaries(page);
         })
 
-
-
-
-
-
+        
         //Add Diary Form
         $("#add_diary_form").submit(function(e) {
             e.preventDefault();
