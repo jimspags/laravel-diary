@@ -1,6 +1,6 @@
 ## Diary
 
-Built using Laravel 9, Ajax, JQuery
+Built using Laravel 9, Ajax, JQuery, Bootstrap 5
 
 - Login and Register Account with upload photo
 - Add, edit, delete and display diary
